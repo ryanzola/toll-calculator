@@ -1,6 +1,8 @@
 package main
 
 import (
+	"context"
+
 	"github.com/ryanzola/toll-calculator/types"
 )
 
@@ -24,12 +26,12 @@ func NewGRPCAggregatorServer(svc Aggregator) *GRPCAggregatorServer {
 
 // business layer -> business layer type (main type everyone needs to conver to)
 
-func (s *GRPCAggregatorServer) AggregateDistance(req *types.AggregateRequest) error {
+func (s *GRPCAggregatorServer) Aggregate(ctx context.Context, req *types.AggregateRequest) (*types.None, error) {
 	distance := types.Distance{
 		OBUID: int(req.ObuID),
 		Value: req.Value,
 		Unix:  req.Unix,
 	}
 
-	return s.svc.AggregateDistance(distance)
+	return &types.None{}, s.svc.AggregateDistance(distance)
 }
